@@ -1,0 +1,104 @@
+1.hr.employees cədvəlində olan ilk 10 sətri göstərin.
+
+select*from hr.employees
+fetch first 10 rows only;
+
+2.Job_id-si İT_PROG olan işçilərin əmək haqqını 100 dollar artırılmış şəkildə göstərin.
+
+
+select  job_id,salary,
+case job_id when 'IT_PROG' then salary+100
+else salary end yeni_maas
+from hr.employees;
+
+
+3.Hər bir çalışanın nömrəsini göstərin. Əgər nömrəsi yoxdursa maili göstərilsin. Nətic sütunun adı əlaqə vasitəsi olsun.
+
+select phone_number, email,
+  case  when phone_number is null then email
+  else phone_number
+  end as contact_info
+from hr.employees;
+
+
+4.Ümumi neçə çalışanımız olduğunu göstərin.
+
+select count(employee_id) from hr.employees;
+
+5.Cədvəlimizdə hansı addan, hansı sayda olduğunu göstərin.
+
+select first_name , count(*) as name_count
+    from hr.employees
+    group by first_name;
+
+6.103 nömrəli menecerin neçə çalışanı olduğunu göstərin.
+
+select manager_id , count(*) as manager_id
+from hr.employees
+where manager_id=103
+group by manager_id;
+
+7.Cədvəlimizdə ən yüksək ortalama maaş neçədir?
+
+select department_id, avg(salary)
+from hr.employees
+group by department_id
+order by avg(salary) desc
+fetch first 1 rows only;
+
+8.Cədvəlimizdə neçə fərqli ad olduğunu göstərin.
+select count (distinct first_name) as name_count
+from hr.employees;
+
+9.Adının 1-ci hərfi S, sondan 2-ci hərfi e olan çalışanların bütün məlumatlarını göstərin.
+
+select*from hr.employees where first_name like 'S%e_'
+
+10.Adının ilk hərfi o, u, e, i olan işçilərin tam adını göstərin.
+
+select concat(concat(first_name, ''), last_name) as full_name
+from  hr.employees
+where first_name like 'O%' or first_name like 'U%' or first_name like 'E%' or first_name like 'İ%';
+
+11.id-si 3-ə qalıqsız bölünən işçilərin bütün məlumatlarını göstərin.
+
+Select*from hr.employees
+ where mod (employee_id,3)=0;
+
+12.hr.employees table-ından manager_id-si null olmayan hər bir job_id-nin ortalama maaşını və həmin id-də olan işçi sayını göstərin. İşçi sayı yalnız 2-dən çox olan job_id-lər göstərilsin.
+
+select job_id,count(employee_id) as count_emp ,avg(salary) as avg_salary  
+    from hr.employees
+    where manager_id is not null
+    group by job_id
+    having count(employee_id)>2;
+
+13. Commision_pct və ya manager_id-si null olan və maaşı 2000-3000 arasında olan işçilərin adını, soyadını və maaşını çıxarın.
+
+
+select first_name , last_name, salary 
+from hr.employees
+where commission_pct is null or manager_id is null and salary between 2000 and 3000;
+
+14.Əmək haqqı 10000-dən böyük olan işçilərin  adlarını təkrarsız şəkildə göstərin. Nəticələri adlara görə Z-dan A-ya doğru sıralayın. Əgər eyni olan adlar varsa sıralama id-lərinə görə azdan çoxa olsun.
+
+
+
+select distinct  first_name , employee_id 
+from hr.employees 
+where salary>10000
+order by first_name desc,employee_id;
+
+15.2003-2005	sı işə başlayan işçilərin məlumatlarını göstərin.
+
+select*from hr.employees
+where to_char(hire_date,'YYYY') between '2003' and '2005';
+
+16.Adı o, u, e, i ilə başlamayan çalışanların adlarını təkrarsız formada göstərin.
+
+select distinct first_name
+from hr.employees
+where first_name not like 'O%' 
+  and first_name not like 'U%' 
+  and first_name not like 'E%'
+  AND first_name not like 'İ%';
