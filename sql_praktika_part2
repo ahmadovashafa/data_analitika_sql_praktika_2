@@ -104,6 +104,19 @@ where first_name not like 'O%'
   AND first_name not like 'İ%';
 
 
+17.Şirkət 10 avqust 2012 tarixində bağlandı. Hər kəss işdən çıxarılacağı üçün ödəniş yekun edilməlidir. 
+    İşdən çıxarıldığı zaman 10 ildən çox təcrübəsi olanlara maaşın 3 qatı, 5-10 il arası təcrübəsi olanları maaşın 2 qatı, 
+    5 ildən daha az təcrübəsi olanlara isə maaşı qədər ödəniş ediləcək. 
+    Buna görə hər bir işçinin id-sini, tam adınə, işə başladığı tarixi, işdın çıxdığı zaman nə qədər təcrübəsi olduğunu , mövcud maaşını və ödəniləcək məbləgi gösterin.
+
+select employee_id,concat(concat(first_name,' '),last_name) as full_name ,hire_date,trunc(months_between(date '2012-08-10', hire_date) / 12) as date_difference,salary,
+
+case  when  trunc(months_between(date '2012-08-10', hire_date) / 12) >10 then salary*3
+    when trunc(months_between(date '2012-08-10', hire_date) / 12)  between 5 and 10 then salary*2
+    else salary 
+    end last_salary
+    from hr.employees;
+
 18.Yaz aylarında işə başlamış işçilərin id-sini, tam adını, işə başladığı tarixi və hazırda işlədiyini nəzərə alaraq neçə il təcrübəsi olduğunu göstərin.
 
 select employee_id, concat(concat(first_name,''),last_name) as full_name, hire_date, trunc((sysdate-hire_date)/365) as tecrube
