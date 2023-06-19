@@ -102,3 +102,16 @@ where first_name not like 'O%'
   and first_name not like 'U%' 
   and first_name not like 'E%'
   AND first_name not like 'İ%';
+
+
+19.Yalız adında böyük və ya kiçik e-nin olduğu işçilərin çalışdığı və 5-dən çox işçisi olan dep-lərin id-sini, ortalama maaşını və işçi sayını göstərin.
+Nəticə işçi sayına göre çoxdan aza sıralansın. Əgər işçi sayları eyni olarsa ortalama maaşa görə azdan çoxa sıralansın.
+
+
+select department_id,avg(salary) as avg_salary, count(*) as counts_emp
+from hr.employees
+where lower(first_name) like '%e%' or upper(first_name) like '%e%'
+group by department_id
+having count(*)>5
+order by counts_emp desc, avg_salary ;
+
